@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>APKStore</title>
+    <style>
+        :root { --bg: #0d0d0d; --card: #1a1a1a; --accent: #00c853; --text: #fff; --sub: #aaa; --nav-h: 60px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 10px 12px;
+            padding-bottom: calc(var(--nav-h) + 15px);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            padding: 6px 0;
+            z-index: 10;
+        }
+        .logo { font-size: 24px; }
+        .header h1 { font-size: 18px; flex: 1; }
+        .profile-btn {
+            background: #222;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .search {
+            width: 100%;
+            padding: 10px 14px;
+            background: #222;
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .search::placeholder { color: #666; font-size: 13px; }
+        .cats {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            scrollbar-width: none;
+        }
+        .cats::-webkit-scrollbar { display: none; }
+        .cat {
+            background: #222;
+            padding: 7px 14px;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            color: #ccc;
+            flex-shrink: 0;
+        }
+        .cat.active { background: var(--accent); color: #000; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card:active { transform: scale(0.96); }
+        .card-icon {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+        .card-info { padding: 10px; }
+        .card-info h3 {
+            font-size: 13px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-info .dev { font-size: 10px; color: var(--sub); margin-bottom: 4px; }
+        .card-info .rating { font-size: 11px; color: #ffc107; }
+        .card-info .size { font-size: 10px; color: var(--sub); float: right; margin-top: 2px; }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: 0.2s;
+        }
+        .btn:active { opacity: 0.7; }
+        .btn.installed { background: #333; color: #888; }
+        .btn-upload { background: #2979ff !important; color: #fff !important; }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #111;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: var(--nav-h);
+            border-top: 1px solid #222;
+            z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            color: #777;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .nav-item span { font-size: 18px; }
+        .nav-item.active { color: var(--accent); }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            padding: 15px;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+        .overlay.show { display: flex; }
+        .overlay-close {
+            align-self: flex-end;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .modal-icon { font-size: 80px; text-align: center; margin: 10px 0; }
+        .overlay h2 { font-size: 20px; text-align: center; }
+        .overlay .dev { text-align: center; color: var(--sub); margin: 4px 0 10px; font-size: 13px; }
+        .screenshots { display: flex; gap: 8px; overflow-x: auto; margin: 10px 0; }
+        .screenshot {
+            min-width: 160px;
+            height: 280px;
+            background: #222;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+        .overlay .description { color: #ccc; font-size: 13px; line-height: 1.4; margin: 10px 0; }
+        .overlay .meta {
+            display: flex;
+            gap: 15px;
+            color: var(--sub);
+            font-size: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .hidden { display: none; }
+        .section-title { font-size: 16px; margin-bottom: 10px; font-weight: 600; }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 20px auto;
+        }
+        .profile-name { font-size: 22px; text-align: center; font-weight: bold; }
+        .profile-email { font-size: 13px; text-align: center; color: var(--sub); margin-bottom: 20px; }
+        .stat-row {
+            display: flex;
+            justify-content: space-around;
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .stat { text-align: center; }
+        .stat-num { font-size: 20px; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 11px; color: var(--sub); }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .input-field::placeholder { color: #666; }
+        .logout-btn {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .badge {
+            display: inline-block;
+            background: #2979ff;
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 4px;
+        }
+        .confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-overlay.show { display: flex; }
+        .confirm-box {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 25px;
+            width: 85%;
+            text-align: center;
+        }
+        .confirm-box h3 { margin-bottom: 10px; font-size: 18px; }
+        .confirm-box p { color: var(--sub); font-size: 13px; margin-bottom: 20px; }
+        .confirm-btns { display: flex; gap: 10px; }
+        .confirm-btns button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-yes { background: var(--accent); color: #000; }
+        .btn-no { background: #333; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span class="logo">🛒</span>
+    <h1>APKStore</h1>
+    <button class="profile-btn" id="profileBtn">👤</button>
+</div>
+
+<input type="text" class="search" placeholder="🔍 Поиск игр..." id="searchInput">
+
+<div class="cats">
+    <button class="cat active" data-filter="all">Все</button>
+    <button class="cat" data-filter="games">🎮 Игры</button>
+    <button class="cat" data-filter="apps">📲 Приложения</button>
+    <button class="cat" data-filter="user">👤 Мои</button>
+</div>
+
+<div id="mainContent">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div class="section-title" style="margin-bottom:0;">🔥 Популярное</div>
+        <button class="btn btn-upload" style="width:auto;padding:8px 14px;margin-top:0;font-size:11px;" id="uploadBtn">📤 Загрузить</button>
+    </div>
+    <div class="grid" id="appGrid"></div>
+</div>
+
+<div id="libraryContent" class="hidden">
+    <div class="section-title">📚 Библиотека</div>
+    <div class="grid" id="libraryGrid"></div>
+    <p id="emptyLibrary" style="text-align:center;color:#666;margin-top:30px;">Пока ничего не установлено</p>
+</div>
+
+<div class="overlay" id="appModal">
+    <button class="overlay-close" id="closeAppModal">✕</button>
+    <div id="modalContent"></div>
+</div>
+
+<div class="overlay" id="profileScreen">
+    <button class="overlay-close" id="closeProfile">✕</button>
+    <div id="profileContent"></div>
+</div>
+
+<div class="confirm-overlay" id="confirmDialog">
+    <div class="confirm-box">
+        <h3>⬇️ Скачать APK?</h3>
+        <p id="confirmText">Вы действительно хотите скачать этот APK-файл?</p>
+        <div class="confirm-btns">
+            <button class="btn-no" id="confirmNo">Отмена</button>
+            <button class="btn-yes" id="confirmYes">Скачать</button>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <button class="nav-item active" data-tab="main"><span>🏠</span>Главная</button>
+    <button class="nav-item" data-tab="library"><span>📚</span>Библиотека</button>
+      </div>
+      <script>
+var userApps = JSON.parse(localStorage.getItem('userApps') || '[]');
+var library = JSON.parse(localStorage.getItem('apkLibrary') || '[]');
+var currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+var pendingUrl = null;
+var currentFilter = 'all';
+
+var presetApps = [
+    { id: 1, name: "Brawl Stars", dev: "Supercell", icon: "🤠", cat: "games", rating: 4.5, size: "650 MB", desc: "Шутер 3 на 3 от Supercell.", url: "https://www.rustore.ru/catalog/app/com.supercell.brawlstars", screens: ["🔫", "💎", "🏆"] },
+    { id: 2, name: "Standoff 2", dev: "Axlebolt", icon: "🔫", cat: "games", rating: 4.4, size: "1.5 GB", desc: "Шутер от первого лица.", url: "https://www.rustore.ru/catalog/app/com.axlebolt.standoff2", screens: ["💣", "🎯", "🏅"] },
+    { id: 3, name: "Minecraft", dev: "Mojang", icon: "⛏️", cat: "games", rating: 4.6, size: "700 MB", desc: "Мир из блоков.", url: "https://www.rustore.ru/catalog/app/com.mojang.minecraftpe", screens: ["🏠", "🐷", "💎"] },
+    { id: 4, name: "Subway Surfers", dev: "SYBO", icon: "🏃", cat: "games", rating: 4.3, size: "180 MB", desc: "Бег по рельсам.", url: "https://www.rustore.ru/catalog/app/com.kiloo.subwaysurf", screens: ["🚂", "💰", "🌈"] },
+    { id: 5, name: "Geometry Dash", dev: "RobTop", icon: "🔺", cat: "games", rating: 4.5, size: "120 MB", desc: "Ритм-платформер.", url: "https://www.rustore.ru/catalog/app/com.robtopx.geometryjump", screens: ["🎵", "💥", "⬆️"] }
+];
+
+function getAllApps() { return [...presetApps, ...userApps.map((a, i) => ({ ...a, id: 1000 + i }))]; }
+function save() { localStorage.setItem('userApps', JSON.stringify(userApps)); localStorage.setItem('apkLibrary', JSON.stringify(library)); localStorage.setItem('currentUser', JSON.stringify(currentUser)); }
+function isInstalled(id) { return library.some(a => a.id === id); }
+
+function openProfile() {
+    var c = document.getElementById('profileContent');
+    var s = document.getElementById('profileScreen');
+    if (!currentUser) {
+        c.innerHTML = '<h2 style="text-align:center;margin-bottom:20px;">👤 Вход / Регистрация</h2>' +
+            '<input type="text" class="input-field" id="regName" placeholder="Ваше имя">' +
+            '<input type="email" class="input-field" id="regEmail" placeholder="Email">' +
+            '<input type="password" class="input-field" id="regPass" placeholder="Пароль">' +
+            '<button class="btn" style="padding:14px;margin-bottom:10px;" id="regBtn">Создать аккаунт</button>' +
+            '<button class="btn" style="background:#333;color:#fff;padding:14px;" id="loginBtn">Войти</button>';
+    } else {
+        var total = library.length;
+        c.innerHTML = '<div class="avatar">' + (currentUser.icon || '👤') + '</div>' +
+            '<div class="profile-name">' + currentUser.name + '</div>' +
+            '<div class="profile-email">' + currentUser.email + '</div>' +
+            '<div class="stat-row"><div class="stat"><div class="stat-num">' + total + '</div><div class="stat-label">Установлено</div></div>' +
+            '<div class="stat"><div class="stat-num">' + userApps.filter(function(a) { return a.author === currentUser.email; }).length + '</div><div class="stat-label">Загружено</div></div></div>' +
+            '<button class="btn" style="background:#2979ff;color:#fff;padding:14px;margin-bottom:8px;" id="profileUploadBtn">📤 Загрузить игру</button>' +
+            '<button class="logout-btn" id="logoutBtn">🚪 Выйти</button>';
+    }
+    s.classList.add('show');
+    setTimeout(bindProfileButtons, 100);
+}
+
+function bindProfileButtons() {
+    var rb = document.getElementById('regBtn');
+    var lb = document.getElementById('loginBtn');
+    var pb = document.getElementById('profileUploadBtn');
+    var ob = document.getElementById('logoutBtn');
+    if (rb) rb.onclick = register;
+    if (lb) lb.onclick = login;
+    if (pb) pb.onclick = function() { closeAll(); openUploadForm(); };
+    if (ob) ob.onclick = logout;
+}
+
+function register() {
+    var n = document.getElementById('regName').value.trim();
+    var e = document.getElementById('regEmail').value.trim();
+    var p = document.getElementById('regPass').value.trim();
+    if (!n || !e || !p) { alert('Заполните все поля'); return; }
+    if (localStorage.getItem('user_' + e)) { alert('Аккаунт уже есть'); return; }
+    var u = { name: n, email: e, password: p, icon: '👤' };
+    localStorage.setItem('user_' + e, JSON.stringify(u));
+    currentUser = u; save(); closeAll(); alert('✅ Аккаунт создан!'); renderAll();
+}
+
+function login() {
+    var e = document.getElementById('regEmail').value.trim();
+    var p = document.getElementById('regPass').value.trim();
+    if (!e || !p) { alert('Введите email и пароль'); return; }
+    var u = JSON.parse(localStorage.getItem('user_' + e) || 'null');
+    if (!u || u.password !== p) { alert('❌ Неверные данные'); return; }
+    currentUser = u; save(); closeAll(); alert('✅ С возвращением!'); renderAll();
+}
+
+function logout() {
+    if (confirm('Выйти?')) { currentUser = null; save(); closeAll(); renderAll(); }
+}
+
+function openUploadForm() {
+    if (!currentUser) { alert('⚠️ Сначала войдите'); openProfile(); return; }
+    document.getElementById('uploadModal') ? document.getElementById('uploadModal').classList.add('show') : null;
+}
+
+function installApp(app) {
+    if (isInstalled(app.id)) return;
+    window.open(app.url, '_blank');
+    library.push({ id: app.id, name: app.name, icon: app.icon, dev: app.dev, date: new Date().toLocaleDateString() });
+    save(); renderAll();
+}
+
+function launchApp(id) {
+    var app = getAllApps().find(function(a) { return a.id === id; }) || library.find(function(a) { return a.id === id; });
+    if (app) alert('🚀 ' + app.name + ' запущено!');
+}
+
+function uninstallApp(id) {
+    if (confirm('Удалить из библиотеки?')) { library = library.filter(function(a) { return a.id !== id; }); save(); renderAll(); }
+}
+
+function openAppModal(id) {
+    var app = getAllApps().find(function(a) { return a.id === id; });
+    if (!app) return;
+    var installed = isInstalled(id);
+    document.getElementById('modalContent').innerHTML =
+        '<div class="modal-icon">' + app.icon + '</div>' +
+        '<h2>' + app.name + '</h2>' +
+        '<p class="dev">' + app.dev + '</p>' +
+        '<div class="screenshots">' + (app.screens || [app.icon]).map(function(s) { return '<div class="screenshot">' + s + '</div>'; }).join('') + '</div>' +
+        '<div class="meta"><span>⭐ ' + app.rating + '</span><span>📦 ' + app.size + '</span></div>' +
+        '<p class="description">' + app.desc + '</p>' +
+        '<p style="text-align:center;color:#ff9800;font-size:11px;">Скачивание через RuStore</p>' +
+        (installed ?
+            '<button class="btn installed" id="launchBtn">▶ ОТКРЫТЬ</button>' +
+            '<button class="btn" style="background:#c62828;color:white;margin-top:6px;" id="uninstallBtn">🗑 Удалить</button>' :
+            '<button class="btn" id="installBtn">⬇ СКАЧАТЬ</button>'
+        );
+    document.getElementById('appModal').classList.add('show');
+    var lb = document.getElementById('launchBtn');
+    var ub = document.getElementById('uninstallBtn');
+    var ib = document.getElementById('installBtn');
+    if (lb) lb.onclick = function() { launchApp(app.id); };
+    if (ub) ub.onclick = function() { uninstallApp(app.id); closeAll(); };
+    if (ib) ib.onclick = function() { installApp(app); closeAll(); };
+}
+
+function getColor(id) { var c = ['#1a237e', '#004d40', '#b71c1c', '#4a148c', '#e65100', '#0d47a1']; return c[(id - 1) % c.length]; }
+function closeAll() { document.querySelectorAll('.overlay,.confirm-overlay').forEach(function(el) { el.classList.remove('show'); }); }
+
+function renderGrid(filter, search) {
+    var apps = getAllApps();
+    if (filter === 'user') apps = userApps.map(function(a, i) { return { ...a, id: 1000 + i }; });
+    else if (filter !== 'all') apps = apps.filter(function(a) { return a.cat === filter; });
+    if (search) apps = apps.filter(function(a) { return a.name.toLowerCase().includes(search); });
+    document.getElementById('appGrid').innerHTML = apps.map(function(app) {
+        var inst = isInstalled(app.id);
+        return '<div class="card">' +
+            '<div class="card-icon" style="background:' + getColor(app.id) + '" data-id="' + app.id + '">' + app.icon + '</div>' +
+            '<div class="card-info"><h3>' + app.name + '</h3><div class="dev">' + app.dev + '</div>' +
+            '<span class="rating">⭐ ' + app.rating + '</span>' +
+            '<span class="size">' + app.size + '</span>' +
+            (inst ?
+                '<button class="btn installed launch-btn" data-id="' + app.id + '">▶ Открыть</button>' :
+                '<button class="btn install-btn" data-id="' + app.id + '">⬇ Скачать</button>') +
+            '</div></div>';
+    }).join('');
+    document.querySelectorAll('.card-icon').forEach(function(el) { el.onclick = function() { openAppModal(parseInt(this.dataset.id)); }; });
+    document.querySelectorAll('.launch-btn').forEach(function(el) { el.onclick = function(e) { e.stopPropagation(); launchApp(parseInt(this.dataset.id)); }; });
+    document.querySelectorAll('.install-btn').forEach(function(el) { el.onclick = function(e) { e.stopPropagation(); var app = getAllApps().find(function(a) { return a.id === parseInt(this.dataset.id); }); if (app) installApp(app); }; });
+}
+
+function renderLibrary() {
+    var grid = document.getElementById('libraryGrid');
+    var empty = document.getElementById('emptyLibrary');
+    if (library.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    grid.innerHTML = library.map(function(app) {
+        return '<div class="card"><div class="card-icon" style="background:' + getColor(app.id) + '">' + app.icon + '</div>' +
+            '<div class="card-info"><h3>' + app.name + '</h3><div class="dev">' + app.dev + '</div>' +
+            '<span style="font-size:9px;color:#666;">Установлено: ' + app.date + '</span>' +
+            '<button class="btn" style="background:#c62828;color:white;font-size:10px;margin-top:4px;padding:6px;" data-id="' + app.id + '">🗑 Удалить</button></div></div>';
+    }).join('');
+    document.querySelectorAll('#libraryGrid .btn').forEach(function(el) { el.onclick = function(e) { e.stopPropagation(); uninstallApp(parseInt(this.dataset.id)); }; });
+}
+
+function renderAll() {
+    var search = document.getElementById('searchInput').value.toLowerCase();
+    renderGrid(currentFilter, search);
+    renderLibrary();
+}
+
+document.getElementById('profileBtn').onclick = openProfile;
+document.getElementById('closeAppModal').onclick = closeAll;
+document.getElementById('closeProfile').onclick = function() { document.getElementById('profileScreen').classList.remove('show'); };
+document.getElementById('searchInput').oninput = function() { renderAll(); };
+
+document.querySelectorAll('.cat').forEach(function(cat) {
+    cat.onclick = function() {
+        document.querySelectorAll('.cat').forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderAll();
+    };
+});
+
+document.querySelectorAll('.nav-item').forEach(function(item) {
+    item.onclick = function() {
+        document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+        this.classList.add('active');
+        var tab = this.dataset.tab;
+        document.getElementById('mainContent').classList.add('hidden');
+        document.getElementById('libraryContent').classList.add('hidden');
+        if (tab === 'main') { document.getElementById('mainContent').classList.remove('hidden'); renderAll(); }
+        else { document.getElementById('libraryContent').classList.remove('hidden'); renderLibrary(); }
+    };
+});
+
+renderAll();
+</script>
+</body>
+</html>
