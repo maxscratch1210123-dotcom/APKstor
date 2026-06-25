@@ -339,8 +339,8 @@
 <div class="bottom-nav">
     <button class="nav-item active" data-tab="main"><span>🏠</span>Главная</button>
     <button class="nav-item" data-tab="library"><span>📚</span>Библиотека</button>
-      </div>
-      <script>
+    </div>
+    <script>
 var userApps = JSON.parse(localStorage.getItem('userApps') || '[]');
 var library = JSON.parse(localStorage.getItem('apkLibrary') || '[]');
 var currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -348,11 +348,11 @@ var pendingUrl = null;
 var currentFilter = 'all';
 
 var presetApps = [
-    { id: 1, name: "Brawl Stars", dev: "Supercell", icon: "🤠", cat: "games", rating: 4.5, size: "650 MB", desc: "Шутер 3 на 3 от Supercell.", url: "https://www.rustore.ru/catalog/app/com.supercell.brawlstars", screens: ["🔫", "💎", "🏆"] },
-    { id: 2, name: "Standoff 2", dev: "Axlebolt", icon: "🔫", cat: "games", rating: 4.4, size: "1.5 GB", desc: "Шутер от первого лица.", url: "https://www.rustore.ru/catalog/app/com.axlebolt.standoff2", screens: ["💣", "🎯", "🏅"] },
-    { id: 3, name: "Minecraft", dev: "Mojang", icon: "⛏️", cat: "games", rating: 4.6, size: "700 MB", desc: "Мир из блоков.", url: "https://www.rustore.ru/catalog/app/com.mojang.minecraftpe", screens: ["🏠", "🐷", "💎"] },
-    { id: 4, name: "Subway Surfers", dev: "SYBO", icon: "🏃", cat: "games", rating: 4.3, size: "180 MB", desc: "Бег по рельсам.", url: "https://www.rustore.ru/catalog/app/com.kiloo.subwaysurf", screens: ["🚂", "💰", "🌈"] },
-    { id: 5, name: "Geometry Dash", dev: "RobTop", icon: "🔺", cat: "games", rating: 4.5, size: "120 MB", desc: "Ритм-платформер.", url: "https://www.rustore.ru/catalog/app/com.robtopx.geometryjump", screens: ["🎵", "💥", "⬆️"] }
+    { id: 1, name: "Brawl Stars", dev: "Supercell", icon: "🤠", cat: "games", rating: 4.5, size: "650 MB", desc: "Шутер 3 на 3 от Supercell.", url: "https://apkpure.com/ru/brawl-stars/com.supercell.brawlstars", screens: ["🔫", "💎", "🏆"] },
+    { id: 2, name: "Standoff 2", dev: "Axlebolt", icon: "🔫", cat: "games", rating: 4.4, size: "1.5 GB", desc: "Шутер от первого лица.", url: "https://apkpure.com/ru/standoff-2/com.axlebolt.standoff2", screens: ["💣", "🎯", "🏅"] },
+    { id: 3, name: "Minecraft", dev: "Mojang", icon: "⛏️", cat: "games", rating: 4.6, size: "700 MB", desc: "Мир из блоков.", url: "https://apkpure.com/ru/minecraft/com.mojang.minecraftpe", screens: ["🏠", "🐷", "💎"] },
+    { id: 4, name: "Subway Surfers", dev: "SYBO", icon: "🏃", cat: "games", rating: 4.3, size: "180 MB", desc: "Бег по рельсам.", url: "https://apkpure.com/ru/subway-surfers/com.kiloo.subwaysurf", screens: ["🚂", "💰", "🌈"] },
+    { id: 5, name: "Geometry Dash", dev: "RobTop", icon: "🔺", cat: "games", rating: 4.5, size: "120 MB", desc: "Ритм-платформер.", url: "https://apkpure.com/ru/geometry-dash/com.robtopx.geometryjump", screens: ["🎵", "💥", "⬆️"] }
 ];
 
 function getAllApps() { return [...presetApps, ...userApps.map((a, i) => ({ ...a, id: 1000 + i }))]; }
@@ -450,7 +450,7 @@ function openAppModal(id) {
         '<div class="screenshots">' + (app.screens || [app.icon]).map(function(s) { return '<div class="screenshot">' + s + '</div>'; }).join('') + '</div>' +
         '<div class="meta"><span>⭐ ' + app.rating + '</span><span>📦 ' + app.size + '</span></div>' +
         '<p class="description">' + app.desc + '</p>' +
-        '<p style="text-align:center;color:#ff9800;font-size:11px;">Скачивание через RuStore</p>' +
+        '<p style="text-align:center;color:#ff9800;font-size:11px;">Скачивание через APKPure</p>' +
         (installed ?
             '<button class="btn installed" id="launchBtn">▶ ОТКРЫТЬ</button>' +
             '<button class="btn" style="background:#c62828;color:white;margin-top:6px;" id="uninstallBtn">🗑 Удалить</button>' :
@@ -539,4 +539,4 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
 renderAll();
 </script>
 </body>
-</html>
+    </html>
