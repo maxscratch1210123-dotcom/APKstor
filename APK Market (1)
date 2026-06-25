@@ -1,0 +1,118 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: http://E3kZPr0zRCKc03L:tBaBoD7tl4JKW1P@localhost:55442/storage/emulated/0/%D0%90%D0%9F%D0%9Ashop.html
+Subject: APK Market
+Date: Thu, 25 Jun 2026 20:50:37 +0300
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--ujDfUBmZVQ16bAEPT3YWd5hRlmiQlaBEelEJ1ZttaC----"
+
+
+------MultipartBoundary--ujDfUBmZVQ16bAEPT3YWd5hRlmiQlaBEelEJ1ZttaC----
+Content-Type: text/html
+Content-ID: <frame-8D2641383A3A719763D8067D5FE023A7@mhtml.blink>
+Content-Transfer-Encoding: binary
+Content-Location: http://E3kZPr0zRCKc03L:tBaBoD7tl4JKW1P@localhost:55442/storage/emulated/0/%D0%90%D0%9F%D0%9Ashop.html
+
+<!DOCTYPE html><html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="cid:css-b6d2de99-d7ec-41c1-a469-5f5c83c41447@mhtml.blink" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>APK Market</title>
+    
+</head>
+<body>
+
+<div class="header"><span style="font-size:24px;">📱</span><h1>APK Market</h1><button class="profile-btn" id="profileBtn">👤</button></div>
+<input type="text" class="search" placeholder="🔍 Поиск игр..." id="searchInput">
+
+<div class="cats">
+    <button class="cat active" data-filter="all">Все</button>
+    <button class="cat" data-filter="games">🎮 Игры</button>
+    <button class="cat" data-filter="user">👤 Мои</button>
+</div>
+
+<div id="mainContent"><div class="section-title">🔥 Популярное</div><div class="grid" id="appGrid"><div class="card"><div class="card-icon" style="background:#1a237e" data-id="1">🤠</div><div class="card-info"><h3>Brawl Stars</h3><div class="dev">Supercell</div><button class="btn install-btn" data-id="1">⬇ Скачать</button></div></div><div class="card"><div class="card-icon" style="background:#1a237e" data-id="2">🔫</div><div class="card-info"><h3>Standoff 2</h3><div class="dev">Axlebolt</div><button class="btn install-btn" data-id="2">⬇ Скачать</button></div></div><div class="card"><div class="card-icon" style="background:#1a237e" data-id="3">⛏️</div><div class="card-info"><h3>Minecraft</h3><div class="dev">Mojang</div><button class="btn install-btn" data-id="3">⬇ Скачать</button></div></div><div class="card"><div class="card-icon" style="background:#1a237e" data-id="4">🏃</div><div class="card-info"><h3>Subway Surfers</h3><div class="dev">SYBO</div><button class="btn install-btn" data-id="4">⬇ Скачать</button></div></div><div class="card"><div class="card-icon" style="background:#1a237e" data-id="5">🔺</div><div class="card-info"><h3>Geometry Dash</h3><div class="dev">RobTop</div><button class="btn install-btn" data-id="5">⬇ Скачать</button></div></div></div></div>
+<div id="libraryContent" class="hidden"><div class="section-title">📚 Библиотека</div><div class="grid" id="libraryGrid"><p style="text-align:center;color:#666;">Пусто</p></div></div>
+
+<div class="overlay" id="appModal"><button class="overlay-close" id="closeAppModal">✕</button><div id="modalContent"></div></div>
+<div class="overlay" id="profileScreen"><button class="overlay-close" id="closeProfile">✕</button><div id="profileContent"></div></div>
+
+<div class="bottom-nav">
+    <button class="nav-item active" data-tab="main"><span>🏠</span>Главная</button>
+    <button class="nav-item" data-tab="library"><span>📚</span>Библиотека</button>
+</div>
+
+
+
+</body></html>
+------MultipartBoundary--ujDfUBmZVQ16bAEPT3YWd5hRlmiQlaBEelEJ1ZttaC----
+Content-Type: text/css
+Content-Transfer-Encoding: binary
+Content-Location: cid:css-b6d2de99-d7ec-41c1-a469-5f5c83c41447@mhtml.blink
+
+@charset "utf-8";
+
+* { margin: 0px; padding: 0px; box-sizing: border-box; }
+
+body { font-family: sans-serif; background: rgb(13, 13, 13); color: rgb(255, 255, 255); padding: 10px 12px 80px; min-height: 100vh; }
+
+.header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+.header h1 { font-size: 18px; flex: 1 1 0%; }
+
+.profile-btn { background: rgb(34, 34, 34); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: rgb(255, 255, 255); font-size: 22px; padding: 6px 10px; border-radius: 20px; cursor: pointer; }
+
+.search { width: 100%; padding: 10px 14px; background: rgb(34, 34, 34); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; border-radius: 20px; color: rgb(255, 255, 255); font-size: 14px; margin-bottom: 12px; }
+
+.cats { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; }
+
+.cat { background: rgb(34, 34, 34); padding: 7px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: rgb(204, 204, 204); white-space: nowrap; }
+
+.cat.active { background: rgb(0, 200, 83); color: rgb(0, 0, 0); font-weight: bold; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.card { background: rgb(26, 26, 26); border-radius: 12px; overflow: hidden; cursor: pointer; }
+
+.card-icon { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+
+.card-info { padding: 10px; }
+
+.card-info h3 { font-size: 13px; }
+
+.card-info .dev { font-size: 10px; color: rgb(170, 170, 170); }
+
+.btn { display: block; width: 100%; padding: 8px; background: rgb(0, 200, 83); color: rgb(0, 0, 0); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; border-radius: 16px; font-weight: bold; font-size: 12px; cursor: pointer; margin-top: 6px; }
+
+.btn.installed { background: rgb(51, 51, 51); color: rgb(136, 136, 136); }
+
+.bottom-nav { position: fixed; bottom: 0px; left: 0px; right: 0px; background: rgb(17, 17, 17); display: flex; justify-content: space-around; align-items: center; height: 60px; border-top: 1px solid rgb(34, 34, 34); z-index: 100; }
+
+.nav-item { background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: rgb(119, 119, 119); font-size: 10px; cursor: pointer; }
+
+.nav-item span { font-size: 18px; display: block; }
+
+.nav-item.active { color: rgb(0, 200, 83); }
+
+.overlay { position: fixed; inset: 0px; background: rgba(0, 0, 0, 0.95); z-index: 200; display: none; flex-direction: column; padding: 15px 15px 100px; overflow-y: auto; }
+
+.overlay.show { display: flex; }
+
+.overlay-close { align-self: flex-end; font-size: 24px; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: rgb(255, 255, 255); cursor: pointer; }
+
+.modal-icon { font-size: 80px; text-align: center; margin: 10px 0px; }
+
+.overlay h2 { font-size: 20px; text-align: center; }
+
+.hidden { display: none; }
+
+.section-title { font-size: 16px; margin-bottom: 10px; font-weight: 600; }
+
+.avatar { width: 80px; height: 80px; border-radius: 50%; background: rgb(0, 200, 83); display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 20px auto; }
+
+.profile-name { font-size: 22px; text-align: center; font-weight: bold; }
+
+.input-field { width: 100%; padding: 12px; background: rgb(34, 34, 34); border: 1px solid rgb(51, 51, 51); border-radius: 10px; color: rgb(255, 255, 255); font-size: 14px; margin-bottom: 12px; }
+
+.logout-btn { background: rgb(198, 40, 40); color: rgb(255, 255, 255); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; padding: 12px; border-radius: 10px; font-size: 14px; cursor: pointer; width: 100%; }
+------MultipartBoundary--ujDfUBmZVQ16bAEPT3YWd5hRlmiQlaBEelEJ1ZttaC------
